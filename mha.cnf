@@ -1,0 +1,19 @@
+[server default]
+# mysql user and password
+user=repl
+password=slavepass
+# working directory on the manager
+manager_workdir=/var/log
+# manager log file
+manager_log=/var/log/mha.log
+# working directory on MySQL servers
+remote_workdir=/var/log
+
+[server1]
+hostname=192.168.44.20
+
+[server2]
+hostname=192.168.44.30
+
+[server3]
+hostname=192.168.44.40

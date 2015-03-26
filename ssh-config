@@ -1,0 +1,39 @@
+Host manager
+  HostName 192.168.44.10
+  User root
+  UserKnownHostsFile /dev/null
+  StrictHostKeyChecking no
+  PasswordAuthentication no
+  IdentityFile ~/.ssh/id_rsa
+  IdentitiesOnly yes
+  LogLevel FATAL
+
+Host db1
+  HostName 192.168.44.20
+  User root
+  UserKnownHostsFile /dev/null
+  StrictHostKeyChecking no
+  PasswordAuthentication no
+  IdentityFile ~/.ssh/id_rsa
+  IdentitiesOnly yes
+  LogLevel FATAL
+
+Host db2
+  HostName 192.168.44.30
+  User root
+  UserKnownHostsFile /dev/null
+  StrictHostKeyChecking no
+  PasswordAuthentication no
+  IdentityFile ~/.ssh/id_rsa
+  IdentitiesOnly yes
+  LogLevel FATAL
+
+Host db3
+  HostName 192.168.44.40
+  User root
+  UserKnownHostsFile /dev/null
+  StrictHostKeyChecking no
+  PasswordAuthentication no
+  IdentityFile ~/.ssh/id_rsa
+  IdentitiesOnly yes
+  LogLevel FATAL
