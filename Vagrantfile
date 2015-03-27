@@ -29,7 +29,7 @@ Vagrant.configure(2) do |config|
       sudo yum install -y mysql-server && sudo /etc/init.d/mysqld start
       wget --no-check-certificate https://72003f4c60f5cc941cd1c7d448fc3c99e0aebaa8.googledrive.com/host/0B1lu97m8-haWeHdGWXp0YVVUSlk/mha4mysql-node-0.56-0.el5.noarch.rpm
       sudo rpm -ivh mha4mysql-node-0.56-0.el5.noarch.rpm
-      mysql -u root -e "GRANT REPLICATION SLAVE ON *.* TO 'repl'@'192.168.44.0/255.255.255.0' IDENTIFIED BY 'slavepass';"
+      mysql -u root -e "GRANT ALL PRIVILEGES ON *.* TO 'repl'@'192.168.44.0/255.255.255.0' IDENTIFIED BY 'slavepass';"
       mysql -u root -e "CREATE DATABASE repltest;"
     SHELL
   end
@@ -44,7 +44,7 @@ Vagrant.configure(2) do |config|
       sudo yum install -y mysql-server && sudo /etc/init.d/mysqld start
       wget --no-check-certificate https://72003f4c60f5cc941cd1c7d448fc3c99e0aebaa8.googledrive.com/host/0B1lu97m8-haWeHdGWXp0YVVUSlk/mha4mysql-node-0.56-0.el5.noarch.rpm
       sudo rpm -ivh mha4mysql-node-0.56-0.el5.noarch.rpm
-      mysql -u root -e "GRANT REPLICATION SLAVE ON *.* TO 'repl'@'192.168.44.0/255.255.255.0' IDENTIFIED BY 'slavepass';"
+      mysql -u root -e "GRANT ALL PRIVILEGES ON *.* TO 'repl'@'192.168.44.0/255.255.255.0' IDENTIFIED BY 'slavepass';"
     SHELL
   end
 
@@ -60,7 +60,7 @@ Vagrant.configure(2) do |config|
       sudo systemctl start mysqld
       wget --no-check-certificate https://72003f4c60f5cc941cd1c7d448fc3c99e0aebaa8.googledrive.com/host/0B1lu97m8-haWeHdGWXp0YVVUSlk/mha4mysql-node-0.56-0.el6.noarch.rpm
       sudo rpm -ivh mha4mysql-node-0.56-0.el6.noarch.rpm
-      mysql -u root -e "GRANT REPLICATION SLAVE ON *.* TO 'repl'@'192.168.44.0/255.255.255.0' IDENTIFIED BY 'slavepass';"
+      mysql -u root -e "GRANT ALL PRIVILEGES ON *.* TO 'repl'@'192.168.44.0/255.255.255.0' IDENTIFIED BY 'slavepass';"
     SHELL
   end
 
