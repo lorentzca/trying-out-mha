@@ -35,6 +35,7 @@ mysql> SHOW MASTER STATUS; # ポジションとログファイルのパスメモ
 [別窓で実行] [vagrant@db1 ~]$ mysqldump -u root --all-databases --lock-all-tables > dbdump.db
 mysql> UNLOCK TABLES;
 [vagrant@db1 ~]$ scp dbdump.db vagrant@192.168.44.30:
+[vagrant@db1 ~]$ scp dbdump.db vagrant@192.168.44.40:
 ```
 
 ### slave(db2)側
