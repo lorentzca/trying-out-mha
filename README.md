@@ -116,6 +116,55 @@ $ vagrant ssh db1
 [vagrant@db1 ~]$ sudo killall -9 mysqld mysqld_safe
 ```
 
-managerの/var/log以下にに`mha.failover.complete`という空ファイルが作成される
+フェイルオーバーが成功するとmanagerの/var/log以下にに`mha.failover.complete`という空ファイルが作成される
 
-## 落としたマスターをmysqlのクラスタに戻す
+## 旧マスター(db1)をmysqlのクラスタにslaveとして戻す
+
+db1のmysqlを起動
+
+```
+[vagrant@db1 ~]$ /etc/init.d/mysqld start
+```
+
+db01はmasterで起動しているのでslaveとしてクラスタに戻す
+
+managerの/var/log/mha.logにslave昇格時のバイナリログのポジションが出力されているので確認(passwordがxxxになっている)
+
+```
+[root@manager ~]# cat /var/log/mha.log
+...
+Mon Mar 30 06:54:23 2015 - [info]  All other slaves should start replication from here. Statement should be: CHANGE MASTER TO MASTER_HOST='192.168.44.30', MASTER_PORT=3306, MASTER_LOG_FILE='mysql-bin.000003', MASTER_LOG_POS=440184, MASTER_USER='repl', MASTER_PASSWORD='xxx';
+```
+
+このログを元にして旧マスターをスレーブとして追加
+
+```
+[vagrant@db1 ~]$ mysql -u root
+mysql> CHANGE MASTER TO MASTER_HOST='192.168.44.30', MASTER_PORT=3306, MASTER_LOG_FILE='mysql-bin.000003', MASTER_LOG_POS=440184, MASTER_USER='repl', MASTER_PASSWORD='slavepass';
+mysql> START SLAVE;
+mysql> SHOW SLAVE STATUS\G
+```
+
+mha-manager起動
+
+```
+[root@manager ~]# masterha_manager --conf=/etc/mha.cnf
+```
+
+## 旧マスター(db1)を再びmasterにする
+
+`masterha_master_switch`コマンドを使い手動でフェイルオーバー実行する
+
+masterha_managerをストップさせる
+
+```
+[root@manager ~]# masterha_stop --conf=/etc/mha.cnf
+```
+
+手動フェイルオーバー実行
+
+```
+[root@manager ~]# masterha_master_switch --master_state=alive --conf=/etc/mha.cnf --new_master_host=192.168.44.20 --orig_master_is_new_slave --interactive=0
+```
+
+旧マスターがマスターに戻り、現マスターがスレーブに降格する
