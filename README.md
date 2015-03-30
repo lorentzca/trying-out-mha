@@ -116,4 +116,6 @@ $ vagrant ssh db1
 [vagrant@db1 ~]$ sudo killall -9 mysqld mysqld_safe
 ```
 
+managerの/var/log以下にに`mha.failover.complete`という空ファイルが作成される
+
 ## 落としたマスターをmysqlのクラスタに戻す
