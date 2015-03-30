@@ -29,10 +29,11 @@ $ vagrant ssh manager
 ### master(db1)側
 
 ```
-[vagrant@db1 ~]$ mysql -u root -e "FLUSH TABLES WITH READ LOCK;"
-[vagrant@db1 ~]$ mysql -u root -e "SHOW MASTER STATUS;" # ポジションとログファイルのパスメモ
-[vagrant@db1 ~]$ mysqldump -u root --all-databases --lock-all-tables > dbdump.db
-[vagrant@db1 ~]$ mysql -u root -e "UNLOCK TABLES;"
+[vagrant@db1 ~]$ mysql -u root
+mysql> FLUSH TABLES WITH READ LOCK;
+mysql> SHOW MASTER STATUS; # ポジションとログファイルのパスメモ
+[別窓で実行] [vagrant@db1 ~]$ mysqldump -u root --all-databases --lock-all-tables > dbdump.db
+mysql> UNLOCK TABLES;
 [vagrant@db1 ~]$ scp dbdump.db vagrant@192.168.44.30:
 ```
 
