@@ -61,7 +61,7 @@ dumpしたデータ読み込み
 [vagrant@db3 ~]$ mysql -u root < dbdump.db
 ```
 
-mysql5.0との互換性を解消するためmysqlのチェックと修正を行う
+mysql5.0との互換性の問題を解消するためmysqlのチェックと修正を行う
 
 ```
 [vagrant@db3 ~]$ sudo mysql_upgrade
