@@ -38,6 +38,8 @@ $ vagrant ssh manager
 
 ### slave(db2)側
 
+dumpしたデータ読み込みとレプリケーションの開始
+
 ```
 [vagrant@db2 ~]$ mysql -u root < dbdump.db
 [vagrant@db2 ~]$ mysql -u root
@@ -53,9 +55,31 @@ mysql> SHOW SLAVE STATUS\G                 # Slave_SQL_Running, Slave_IO_Running
 
 ### slave(db3)側
 
-mysql5.0のdump食わせると何かのデータ読み込んだタイミングでクラッシュするので調査中
+dumpしたデータ読み込み
 
-レプリケーション自体は正常に動いた(レプリケーション開始前のデータ捨てることになるけど)
+```
+[vagrant@db3 ~]$ mysql -u root < dbdump.db
+```
+
+mysql5.0との互換性を解消するためmysqlのチェックと修正を行う
+
+```
+[vagrant@db3 ~]$ sudo mysql_upgrade
+```
+
+レプリケーションの開始
+
+```
+[vagrant@db3 ~]$ mysql -u root
+mysql> CHANGE MASTER TO
+    -> MASTER_HOST='192.168.44.20',
+    -> MASTER_USER='repl',
+    -> MASTER_PASSWORD='slavepass',
+    -> MASTER_LOG_FILE='mysql-bin.000001', # メモした値に
+    -> MASTER_LOG_POS=189;                 # メモした値に
+mysql> START SLAVE;
+mysql> SHOW SLAVE STATUS\G                 # Slave_SQL_Running, Slave_IO_Running がYesになっていればok
+```
 
 ## レプリケーション確認
 
