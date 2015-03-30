@@ -107,11 +107,13 @@ mysql> SHOW SLAVE STATUS\G                 # Slave_SQL_Running, Slave_IO_Running
 
 ## フェイルオーバーさせる
 
-フェイルオーバーするとmha-managerがフェイルオーバー実行する
+マスターを落とすとmha-managerがフェイルオーバーを実行する
 
-その後mha-managerは終了する？
+その後mha-managerは終了する
 
 ```
 $ vagrant ssh db1
 [vagrant@db1 ~]$ sudo killall -9 mysqld mysqld_safe
 ```
+
+## 落としたマスターをmysqlのクラスタに戻す
