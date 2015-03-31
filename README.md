@@ -123,7 +123,7 @@ $ vagrant ssh db1
 db1のmysqlを起動
 
 ```
-[vagrant@db1 ~]$ /etc/init.d/mysqld start
+[vagrant@db1 ~]$ sudo /etc/init.d/mysqld start
 ```
 
 db01はmasterで起動しているのでslaveとしてクラスタに戻す
