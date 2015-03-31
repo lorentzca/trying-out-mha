@@ -47,6 +47,7 @@ dumpしたデータ読み込みとレプリケーションの開始
 [vagrant@db2 ~]$ mysql -u root
 mysql> CHANGE MASTER TO
     -> MASTER_HOST='192.168.44.20',
+    -> MASTER_PORT=3306,
     -> MASTER_USER='repl',
     -> MASTER_PASSWORD='slavepass',
     -> MASTER_LOG_FILE='mysql-bin.000001', # メモした値に
@@ -75,6 +76,7 @@ mysql5.0との互換性の問題を解消するためmysqlのチェックと修�
 [vagrant@db3 ~]$ mysql -u root
 mysql> CHANGE MASTER TO
     -> MASTER_HOST='192.168.44.20',
+    -> MASTER_PORT=3306,
     -> MASTER_USER='repl',
     -> MASTER_PASSWORD='slavepass',
     -> MASTER_LOG_FILE='mysql-bin.000001', # メモした値に
@@ -145,17 +147,18 @@ mysql> START SLAVE;
 mysql> SHOW SLAVE STATUS\G
 ```
 
-mha-manager起動
+レプリケーションチェック
+`MySQL Replication Health is OK.`となればok
 
 ```
-[root@manager ~]# masterha_manager --conf=/etc/mha.cnf
+[root@manager ~]# masterha_check_repl --conf=/etc/mha.cnf
 ```
 
 ## 旧マスター(db1)を再びmasterにする
 
 `masterha_master_switch`コマンドを使い手動でフェイルオーバー実行する
 
-masterha_managerをストップさせる
+masterha_managerが動いていたらストップさせる
 
 ```
 [root@manager ~]# masterha_stop --conf=/etc/mha.cnf
