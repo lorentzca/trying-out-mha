@@ -1,0 +1,4 @@
+uidgid {
+   uid: vagrant
+   gid: vagrant
+}
