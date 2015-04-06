@@ -37,6 +37,7 @@ Vagrant.configure(2) do |config|
       sudo yum install -y pacemaker corosync
       sudo mkdir /var/log/cluster/
       sudo corosync-keygen
+      sudo cp /vagrant/db1-corosync.conf /etc/corosync/corosync.conf
     SHELL
   end
 
@@ -56,6 +57,7 @@ Vagrant.configure(2) do |config|
       sudo yum install -y heartbeat-stonith
       sudo yum install -y pacemaker corosync
       sudo mkdir /var/log/cluster/
+      sudo cp /vagrant/db2-corosync.conf /etc/corosync/corosync.conf
     SHELL
   end
 
