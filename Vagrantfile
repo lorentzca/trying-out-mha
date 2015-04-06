@@ -31,6 +31,10 @@ Vagrant.configure(2) do |config|
       sudo rpm -ivh mha4mysql-node-0.56-0.el5.noarch.rpm
       mysql -u root -e "GRANT ALL PRIVILEGES ON *.* TO 'repl'@'192.168.44.0/255.255.255.0' IDENTIFIED BY 'slavepass';"
       mysql -u root -e "CREATE DATABASE repltest;"
+      sudo yum install -y epel-release
+      sudo wget -O /etc/yum.repos.d/clusterlabs.repo http://clusterlabs.org/rpm/epel-5/clusterlabs.repo
+      sudo yum install -y heartbeat-stonith
+      sudo yum install -y pacemaker corosync
     SHELL
   end
 
@@ -45,6 +49,10 @@ Vagrant.configure(2) do |config|
       wget --no-check-certificate https://72003f4c60f5cc941cd1c7d448fc3c99e0aebaa8.googledrive.com/host/0B1lu97m8-haWeHdGWXp0YVVUSlk/mha4mysql-node-0.56-0.el5.noarch.rpm
       sudo rpm -ivh mha4mysql-node-0.56-0.el5.noarch.rpm
       mysql -u root -e "GRANT ALL PRIVILEGES ON *.* TO 'repl'@'192.168.44.0/255.255.255.0' IDENTIFIED BY 'slavepass';"
+      sudo yum install -y epel-release
+      sudo wget -O /etc/yum.repos.d/clusterlabs.repo http://clusterlabs.org/rpm/epel-5/clusterlabs.repo
+      sudo yum install -y heartbeat-stonith
+      sudo yum install -y pacemaker corosync
     SHELL
   end
 
@@ -61,6 +69,7 @@ Vagrant.configure(2) do |config|
       wget --no-check-certificate https://72003f4c60f5cc941cd1c7d448fc3c99e0aebaa8.googledrive.com/host/0B1lu97m8-haWeHdGWXp0YVVUSlk/mha4mysql-node-0.56-0.el6.noarch.rpm
       sudo rpm -ivh mha4mysql-node-0.56-0.el6.noarch.rpm
       mysql -u root -e "GRANT ALL PRIVILEGES ON *.* TO 'repl'@'192.168.44.0/255.255.255.0' IDENTIFIED BY 'slavepass';"
+      sudo yum install -y pacemaker
     SHELL
   end
 
