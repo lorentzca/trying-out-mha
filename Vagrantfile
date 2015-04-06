@@ -35,6 +35,8 @@ Vagrant.configure(2) do |config|
       sudo wget -O /etc/yum.repos.d/clusterlabs.repo http://clusterlabs.org/rpm/epel-5/clusterlabs.repo
       sudo yum install -y heartbeat-stonith
       sudo yum install -y pacemaker corosync
+      sudo mkdir /var/log/cluster/
+      sudo corosync-keygen
     SHELL
   end
 
@@ -53,6 +55,7 @@ Vagrant.configure(2) do |config|
       sudo wget -O /etc/yum.repos.d/clusterlabs.repo http://clusterlabs.org/rpm/epel-5/clusterlabs.repo
       sudo yum install -y heartbeat-stonith
       sudo yum install -y pacemaker corosync
+      sudo mkdir /var/log/cluster/
     SHELL
   end
 
@@ -84,5 +87,6 @@ Vagrant.configure(2) do |config|
     sed -ri 's/#PubkeyAuthentication yes/PubkeyAuthentication yes/g'  /etc/ssh/sshd_config
     sed -ri 's/#AuthorizedKeysFile/AuthorizedKeysFile/g'  /etc/ssh/sshd_config
     sudo cp /vagrant/ssh-config ~/.ssh/config
+    sudo yum install -y vim-enhanced
   SHELL
 end
