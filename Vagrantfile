@@ -66,7 +66,24 @@ Vagrant.configure(2) do |config|
     SHELL
   end
 
-  # manager, node共通
+  # app
+  config.vm.define 'app' do |app|
+    app.vm.box = "chef/centos-5.11"
+    app.vm.network 'private_network', ip: '192.168.44.9'
+    app.cache.scope = :box if Vagrant.has_plugin? 'vagrant-cachier'
+    app.vm.provision "shell", inline: <<-SHELL
+      sudo hostname app
+      sudo cp /vagrant/resolv.conf /etc/
+      sudo yum install -y dnsmasq
+      sudo cp /etc/dnsmasq.conf /etc/dnsmasq.conf.orig
+      sudo bash -c "echo 'server=/consul/192.168.44.10#8600' >> /etc/dnsmasq.conf"
+      sudo bash -c "echo 'strict-order' >> /etc/dnsmasq.conf"
+      sudo /sbin/chkconfig dnsmasq on
+      sudo /etc/init.d/dnsmasq start
+    SHELL
+  end
+
+  # mha-manager,mha-node 共通
   config.vm.provision "shell", inline: <<-SHELL
     sudo yum install -y perl-DBD-MySQL
     sudo mkdir -p /root/.ssh/
@@ -77,6 +94,6 @@ Vagrant.configure(2) do |config|
     sed -ri 's/#PubkeyAuthentication yes/PubkeyAuthentication yes/g'  /etc/ssh/sshd_config
     sed -ri 's/#AuthorizedKeysFile/AuthorizedKeysFile/g'  /etc/ssh/sshd_config
     sudo cp /vagrant/ssh-config ~/.ssh/config
-    sudo yum install -y unzip bind-utils vim-enhanced
+    sudo yum install -y unzip bind-utils vim-enhanced curl
   SHELL
 end
