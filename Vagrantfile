@@ -17,6 +17,10 @@ Vagrant.configure(2) do |config|
       sudo cp /vagrant/mha.cnf /etc/
       wget -O /home/vagrant/consul0.5.0.zip https://dl.bintray.com/mitchellh/consul/0.5.0_linux_amd64.zip
       unzip /home/vagrant/consul0.5.0.zip -d /home/vagrant/
+      sudo mkdir -p /etc/consul.d/bootstrap
+      sudo mkdir /var/consul
+      sudo chown vagrant. /var/consul
+      sudo cp /vagrant/consul-bootstrap-config.json /etc/consul.d/bootstrap/config.json
     SHELL
   end
 
