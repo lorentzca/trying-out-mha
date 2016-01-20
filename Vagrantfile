@@ -15,12 +15,16 @@ Vagrant.configure(2) do |config|
       wget --no-check-certificate https://72003f4c60f5cc941cd1c7d448fc3c99e0aebaa8.googledrive.com/host/0B1lu97m8-haWeHdGWXp0YVVUSlk/mha4mysql-manager-0.56-0.el5.noarch.rpm
       sudo rpm -ivh mha4mysql-manager-0.56-0.el5.noarch.rpm
       sudo cp /vagrant/mha.cnf /etc/
-      wget -O /home/vagrant/consul0.5.0.zip https://dl.bintray.com/mitchellh/consul/0.5.0_linux_amd64.zip
-      unzip /home/vagrant/consul0.5.0.zip -d /home/vagrant/
+      wget --no-check-certificate -O /tmp/consul.zip https://releases.hashicorp.com/consul/0.6.0/consul_0.6.0_linux_amd64.zip
+      sudo unzip /tmp/consul.zip -d /usr/local/sbin
       sudo mkdir -p /etc/consul.d/bootstrap
       sudo mkdir /var/consul
       sudo chown vagrant. /var/consul
       sudo cp /vagrant/consul-bootstrap-config.json /etc/consul.d/bootstrap/config.json
+      sudo bash -c "curl --insecure -L https://gist.githubusercontent.com/Lorentzca/98c7e00b3313155a53e2/raw/consul > /etc/init.d/consul"
+      sudo chmod 755 /etc/init.d/consul
+      sudo /sbin/chkconfig --add consul
+      sudo /sbin/chkconfig consul on
     SHELL
   end
 
