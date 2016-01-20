@@ -25,6 +25,7 @@ Vagrant.configure(2) do |config|
       sudo chmod 755 /etc/init.d/consul
       sudo /sbin/chkconfig --add consul
       sudo /sbin/chkconfig consul on
+      sudo /sbin/service consul start
     SHELL
   end
 
