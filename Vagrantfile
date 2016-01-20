@@ -26,6 +26,7 @@ Vagrant.configure(2) do |config|
       sudo /sbin/chkconfig --add consul
       sudo /sbin/chkconfig consul on
       sudo /sbin/service consul start
+      curl -s -X PUT -d '{ "Node": "dbmaster", "Address": "192.168.44.20" }' http://192.168.44.10:8500/v1/catalog/register
     SHELL
   end
 
