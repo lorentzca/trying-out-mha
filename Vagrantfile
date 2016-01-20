@@ -15,6 +15,8 @@ Vagrant.configure(2) do |config|
       wget --no-check-certificate https://72003f4c60f5cc941cd1c7d448fc3c99e0aebaa8.googledrive.com/host/0B1lu97m8-haWeHdGWXp0YVVUSlk/mha4mysql-manager-0.56-0.el5.noarch.rpm
       sudo rpm -ivh mha4mysql-manager-0.56-0.el5.noarch.rpm
       sudo cp /vagrant/mha.cnf /etc/
+      sudo cp /vagrant/master_name_failover /usr/local/sbin/
+      sudo chmod 755 /usr/local/sbin/master_name_failover
       wget --no-check-certificate -O /tmp/consul.zip https://releases.hashicorp.com/consul/0.6.0/consul_0.6.0_linux_amd64.zip
       sudo unzip /tmp/consul.zip -d /usr/local/sbin
       sudo mkdir -p /etc/consul.d/bootstrap
