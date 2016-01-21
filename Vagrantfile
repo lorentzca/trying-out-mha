@@ -16,7 +16,9 @@ Vagrant.configure(2) do |config|
       sudo rpm -ivh mha4mysql-manager-0.56-0.el5.noarch.rpm
       sudo cp /vagrant/mha.cnf /etc/
       sudo cp /vagrant/master_name_failover /usr/local/sbin/
+      sudo cp /vagrant/master_name_online_change /usr/local/sbin/
       sudo chmod 755 /usr/local/sbin/master_name_failover
+      sudo chmod 755 /usr/local/sbin/master_name_online_change
       wget --no-check-certificate -O /tmp/consul.zip https://releases.hashicorp.com/consul/0.6.0/consul_0.6.0_linux_amd64.zip
       sudo unzip /tmp/consul.zip -d /usr/local/sbin
       sudo mkdir -p /etc/consul.d/bootstrap
