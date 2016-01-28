@@ -2,7 +2,7 @@
 # vi: set ft=ruby :
 
 Vagrant.configure(2) do |config|
-  config.vm.define 'manager' do |manager|
+  config.vm.define 'manager', primary: true do |manager|
     manager.vm.box = "chef/centos-5.11"
     manager.vm.network 'private_network', ip: '192.168.44.10'
     manager.cache.scope = :box if Vagrant.has_plugin? 'vagrant-cachier'
@@ -15,6 +15,24 @@ Vagrant.configure(2) do |config|
       wget --no-check-certificate https://72003f4c60f5cc941cd1c7d448fc3c99e0aebaa8.googledrive.com/host/0B1lu97m8-haWeHdGWXp0YVVUSlk/mha4mysql-manager-0.56-0.el5.noarch.rpm
       sudo rpm -ivh mha4mysql-manager-0.56-0.el5.noarch.rpm
       sudo cp /vagrant/mha.cnf /etc/
+      sudo cp /vagrant/master_name_failover /usr/local/sbin/
+      sudo cp /vagrant/master_name_online_change /usr/local/sbin/
+      sudo chmod 755 /usr/local/sbin/master_name_failover
+      sudo chmod 755 /usr/local/sbin/master_name_online_change
+      sudo cp /vagrant/mhamanager_initscript /etc/init.d/mhamanager
+      sudo chmod 755 /etc/init.d/mhamanager
+      wget --no-check-certificate -O /tmp/consul.zip https://releases.hashicorp.com/consul/0.6.0/consul_0.6.0_linux_amd64.zip
+      sudo unzip /tmp/consul.zip -d /usr/local/sbin
+      sudo mkdir -p /etc/consul.d/bootstrap
+      sudo mkdir /var/consul
+      sudo chown vagrant. /var/consul
+      sudo cp /vagrant/consul-bootstrap-config.json /etc/consul.d/bootstrap/config.json
+      sudo bash -c "curl --insecure -L https://gist.githubusercontent.com/Lorentzca/98c7e00b3313155a53e2/raw/consul > /etc/init.d/consul"
+      sudo chmod 755 /etc/init.d/consul
+      sudo /sbin/chkconfig --add consul
+      sudo /sbin/chkconfig consul on
+      sudo /sbin/service consul start
+      curl -s -X PUT -d '{ "Node": "dbmaster", "Address": "192.168.44.20" }' http://192.168.44.10:8500/v1/catalog/register
     SHELL
   end
 
@@ -64,7 +82,24 @@ Vagrant.configure(2) do |config|
     SHELL
   end
 
-  # manager, node共通
+  # app
+  config.vm.define 'app' do |app|
+    app.vm.box = "chef/centos-5.11"
+    app.vm.network 'private_network', ip: '192.168.44.9'
+    app.cache.scope = :box if Vagrant.has_plugin? 'vagrant-cachier'
+    app.vm.provision "shell", inline: <<-SHELL
+      sudo hostname app
+      sudo cp /vagrant/resolv.conf /etc/
+      sudo yum install -y dnsmasq
+      sudo cp /etc/dnsmasq.conf /etc/dnsmasq.conf.orig
+      sudo bash -c "echo 'server=/consul/192.168.44.10#8600' >> /etc/dnsmasq.conf"
+      sudo bash -c "echo 'strict-order' >> /etc/dnsmasq.conf"
+      sudo /sbin/chkconfig dnsmasq on
+      sudo /etc/init.d/dnsmasq start
+    SHELL
+  end
+
+  # mha-manager,mha-node 共通
   config.vm.provision "shell", inline: <<-SHELL
     sudo yum install -y perl-DBD-MySQL
     sudo mkdir -p /root/.ssh/
@@ -75,5 +110,6 @@ Vagrant.configure(2) do |config|
     sed -ri 's/#PubkeyAuthentication yes/PubkeyAuthentication yes/g'  /etc/ssh/sshd_config
     sed -ri 's/#AuthorizedKeysFile/AuthorizedKeysFile/g'  /etc/ssh/sshd_config
     sudo cp /vagrant/ssh-config ~/.ssh/config
+    sudo yum install -y unzip bind-utils vim-enhanced curl
   SHELL
 end

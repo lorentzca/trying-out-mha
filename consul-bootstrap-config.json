@@ -1,0 +1,8 @@
+{
+    "bootstrap_expect": 1 ,
+    "server": true,
+    "datacenter": "vagrant-dc",
+    "data_dir": "/var/consul",
+    "bind_addr": "192.168.44.10",
+    "client_addr": "0.0.0.0"
+}
