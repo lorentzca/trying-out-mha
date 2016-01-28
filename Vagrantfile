@@ -2,7 +2,7 @@
 # vi: set ft=ruby :
 
 Vagrant.configure(2) do |config|
-  config.vm.define 'manager' do |manager|
+  config.vm.define 'manager', primary: true do |manager|
     manager.vm.box = "chef/centos-5.11"
     manager.vm.network 'private_network', ip: '192.168.44.10'
     manager.cache.scope = :box if Vagrant.has_plugin? 'vagrant-cachier'
