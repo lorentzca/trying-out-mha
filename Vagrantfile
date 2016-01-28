@@ -19,6 +19,8 @@ Vagrant.configure(2) do |config|
       sudo cp /vagrant/master_name_online_change /usr/local/sbin/
       sudo chmod 755 /usr/local/sbin/master_name_failover
       sudo chmod 755 /usr/local/sbin/master_name_online_change
+      sudo cp /vagrant/mhamanager_initscript /etc/init.d/mhamanager
+      sudo chmod 755 /etc/init.d/mhamanager
       wget --no-check-certificate -O /tmp/consul.zip https://releases.hashicorp.com/consul/0.6.0/consul_0.6.0_linux_amd64.zip
       sudo unzip /tmp/consul.zip -d /usr/local/sbin
       sudo mkdir -p /etc/consul.d/bootstrap
